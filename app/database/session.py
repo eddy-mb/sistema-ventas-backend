@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import Session, SQLModel, create_engine
 
 load_dotenv()
 DB_HOST = os.getenv("DB_HOST")
@@ -20,3 +20,8 @@ DATABASE_URL = (
 engine = create_engine(DATABASE_URL, echo=bool(SQL_ECHO))
 
 metadata = SQLModel.metadata
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
