@@ -4,7 +4,7 @@ from app.core import custom_exception_register
 
 app = FastAPI()
 
-# Registrar manejadores de excepciones
+# Registrar manejadores de excepciones personalizados
 custom_exception_register(app)
 
 
