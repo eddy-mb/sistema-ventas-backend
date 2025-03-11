@@ -22,8 +22,8 @@ class ClienteRead(ClienteBase):
 
 
 class ClienteUpdate(ClienteBase):
-    """Nose incluyen tipo_documento y numero_documento por que son datos
-    sensibles
+    """
+    Nose incluyen tipo_documento y numero_documento por que son datos sensibles
     - Funcionan como identificadores naturales del cliente
     - Podrían estar referenciados en documentos de ventas, auditoría o
     registros legales
