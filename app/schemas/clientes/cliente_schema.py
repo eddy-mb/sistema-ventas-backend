@@ -6,14 +6,13 @@ from sqlmodel import SQLModel
 from app.core.enums import EstadoCliente, TipoDocumento
 from app.models.clientes.cliente_model import ClienteBase
 from app.schemas.clientes.contacto_emergencia_schema import (
-    ContactoEmergenciaCreate,
     ContactoEmergenciaRead,
 )
 
 
 class ClienteCreate(ClienteBase):
 
-    contactos_emergencia: list[ContactoEmergenciaCreate] | None = None
+    pass
 
 
 class ClienteRead(ClienteBase):
