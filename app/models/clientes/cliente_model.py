@@ -5,6 +5,7 @@ from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
 
 from app.core.enums import EstadoCliente, TipoDocumento
+from app.models.auditoria.base_model import BaseModel
 
 if TYPE_CHECKING:
     from .contacto_emergencia_model import ContactoEmergencia
@@ -24,12 +25,9 @@ class ClienteBase(SQLModel):
     estado: EstadoCliente = Field(default=EstadoCliente.ACTIVO)
 
 
-class Cliente(ClienteBase, table=True):
+class Cliente(ClienteBase, BaseModel, table=True):
     __tablename__ = "clientes"
-    id: int | None = Field(default=None, primary_key=True)
-    fecha_registro: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc)
-    )
+    fecha_registro: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Relationships
     contactos_emergencia: list["ContactoEmergencia"] = Relationship(

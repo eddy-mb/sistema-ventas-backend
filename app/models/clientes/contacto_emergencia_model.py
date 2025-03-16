@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
 
+from app.models.auditoria.base_model import BaseModel
+
 if TYPE_CHECKING:
     from .cliente_model import Cliente
 
@@ -12,10 +14,9 @@ class ContactoEmergenciaBase(SQLModel):
     telefono: str = Field(min_length=3, max_length=20)
 
 
-class ContactoEmergencia(ContactoEmergenciaBase, table=True):
+class ContactoEmergencia(ContactoEmergenciaBase, BaseModel, table=True):
     __tablename__ = "contactos_emergencia"
 
-    id: int | None = Field(default=None, primary_key=True)
     cliente_id: int = Field(foreign_key="clientes.id")
 
     # Relationships
