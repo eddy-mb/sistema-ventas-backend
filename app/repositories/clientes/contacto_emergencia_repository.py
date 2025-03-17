@@ -26,6 +26,6 @@ class ContactoEmergenciaRepository(BaseRepository[ContactoEmergencia]):
         """
         query = select(ContactoEmergencia).where(
             ContactoEmergencia.cliente_id == cliente_id,
-            col(ContactoEmergencia._estado).is_(True),
+            col(ContactoEmergencia.estado_audit).is_(True),
         )
         return list(self.db.exec(query).all())

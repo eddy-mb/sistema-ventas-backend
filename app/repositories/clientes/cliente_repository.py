@@ -30,7 +30,7 @@ class ClienteRepository(BaseRepository[Cliente]):
         query = select(Cliente).where(
             Cliente.tipo_documento == tipo_documento,
             Cliente.numero_documento == numero_documento,
-            col(Cliente._estado).is_(True),
+            col(Cliente.estado_audit).is_(True),
         )
         return self.db.exec(query).first()
 
@@ -44,7 +44,7 @@ class ClienteRepository(BaseRepository[Cliente]):
         Returns:
             Consulta SQLModel con filtros aplicados.
         """
-        query = select(Cliente).where(col(Cliente._estado).is_(True))
+        query = select(Cliente).where(col(Cliente.estado_audit).is_(True))
 
         # Aplicar filtros si están presentes en los parámetros
         if params.nombre:

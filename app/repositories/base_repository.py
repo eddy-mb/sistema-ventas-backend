@@ -29,16 +29,14 @@ class BaseRepository(Generic[T], ABC):
     def create(self, data: Dict[str, Any], usuario: str = "sistema") -> T:
         """Crea un nuevo registro con información de auditoría."""
         obj = self.model_class(**data)
-        obj._usuario_creacion = usuario
-        obj._fecha_creacion = datetime.now(timezone.utc)
+        obj.usuario_creacion = usuario
+        obj.fecha_creacion = datetime.now(timezone.utc)
         self.db.add(obj)
         self.db.commit()
         self.db.refresh(obj)
         return obj
 
-    def update(
-        self, id: int, data: Dict[str, Any], usuario: str = "sistema"
-    ) -> Optional[T]:
+    def update(self, id: int, data: Dict[str, Any], usuario: str = "sistema") -> Optional[T]:
         """Actualiza un registro existente con información de auditoría."""
         obj = self.get_by_id(id)
         if not obj:
@@ -47,8 +45,8 @@ class BaseRepository(Generic[T], ABC):
         for key, value in data.items():
             setattr(obj, key, value)
 
-        obj._usuario_modificacion = usuario
-        obj._fecha_modificacion = datetime.now(timezone.utc)
+        obj.usuario_modificacion = usuario
+        obj.fecha_modificacion = datetime.now(timezone.utc)
 
         self.db.add(obj)
         self.db.commit()
@@ -58,15 +56,13 @@ class BaseRepository(Generic[T], ABC):
     def get_by_id(self, id: int) -> Optional[T]:
         """Recupera un registro por su ID."""
         query = select(self.model_class).where(
-            self.model_class.id == id, col(self.model_class._estado).is_(True)
+            self.model_class.id == id, col(self.model_class.estado_audit).is_(True)
         )
         return self.db.exec(query).first()
 
     def get_all(self) -> List[T]:
         """Recupera todos los registros activos."""
-        query = select(self.model_class).where(
-            col(self.model_class._estado).is_(True)
-        )
+        query = select(self.model_class).where(col(self.model_class.estado_audit).is_(True))
         return list(self.db.exec(query).all())
 
     def delete(self, id: int, usuario: str = "sistema") -> bool:
@@ -75,9 +71,9 @@ class BaseRepository(Generic[T], ABC):
         if not obj:
             return False
 
-        obj._estado = False
-        obj._usuario_modificacion = usuario
-        obj._fecha_modificacion = datetime.now(timezone.utc)
+        obj.estado_audit = False
+        obj.usuario_modificacion = usuario
+        obj.fecha_modificacion = datetime.now(timezone.utc)
 
         self.db.add(obj)
         self.db.commit()
