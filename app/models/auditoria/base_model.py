@@ -6,13 +6,11 @@ from sqlmodel import Field, SQLModel
 class AuditableModel(SQLModel):
     """Modelo base que incluye campos de auditoría estándar"""
 
-    _estado: bool = Field(default=True, index=True)
-    _usuario_creacion: str | None = Field(default=None)
-    _fecha_creacion: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc)
-    )
-    _usuario_modificacion: str | None = Field(default=None)
-    _fecha_modificacion: datetime | None = Field(default=None)
+    estado_audit: bool = Field(default=True, index=True)
+    usuario_creacion: str | None = Field(default=None)
+    fecha_creacion: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    usuario_modificacion: str | None = Field(default=None)
+    fecha_modificacion: datetime | None = Field(default=None)
 
 
 class IdentifiableModel(SQLModel):

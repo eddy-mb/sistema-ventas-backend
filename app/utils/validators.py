@@ -32,7 +32,7 @@ class ClienteValidators:
         query = select(Cliente).where(
             Cliente.tipo_documento == tipo_documento,
             Cliente.numero_documento == numero_documento,
-            col(Cliente._estado).is_(True),
+            col(Cliente.estado_audit).is_(True),
         )
 
         # Si es una actualización, excluir el cliente actual
