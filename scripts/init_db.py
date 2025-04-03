@@ -13,19 +13,25 @@ $ python -m scripts.init_db
 import os
 import sys
 from datetime import datetime, timezone
-from typing import TypedDict
-
-from sqlmodel import Session, select
-
-from app.core.config import get_settings
-from app.core.enums import UserStatus
-from app.database.session import engine
-from app.models.auth.role_model import Permission, Role, RolePermission
-from app.models.auth.user_model import User, UserRole
-from app.utils.security import get_password_hash
 
 # Agregar el directorio raíz al path para poder importar los módulos de la aplicación
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from typing import TypedDict  # noqa
+
+from sqlmodel import Session, select  # noqa
+
+from app.core.config import get_settings  # noqa
+from app.core.enums import UserStatus  # noqa
+from app.database.session import engine  # noqa
+from app.models.auth.role_model import (  # noqa
+    Permission,
+    Role,
+    RolePermission,
+    UserRole,
+)
+from app.models.auth.user_model import User  # noqa
+from app.utils.security import get_password_hash  # noqa
 
 settings = get_settings()
 

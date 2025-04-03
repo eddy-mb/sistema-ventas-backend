@@ -12,6 +12,7 @@ class Role(BaseModel, table=True):
     """Modelo para roles del sistema."""
 
     __tablename__ = "roles"
+    __table_args__ = {"schema": "auth"}
 
     name: str = Field(max_length=50, index=True)
     description: Optional[str] = Field(max_length=255, default=None)
@@ -26,6 +27,7 @@ class Permission(BaseModel, table=True):
     """Modelo para permisos del sistema."""
 
     __tablename__ = "permissions"
+    __table_args__ = {"schema": "auth"}
 
     code: str = Field(max_length=100, index=True)
     name: str = Field(max_length=100)
@@ -40,9 +42,10 @@ class UserRole(BaseModel, table=True):
     """Tabla de relación entre usuarios y roles."""
 
     __tablename__ = "user_roles"
+    __table_args__ = {"schema": "auth"}
 
-    user_id: int = Field(foreign_key="users.id")
-    role_id: int = Field(foreign_key="roles.id")
+    user_id: int = Field(foreign_key="auth.users.id")
+    role_id: int = Field(foreign_key="auth.roles.id")
 
     # Relationships
     user: "User" = Relationship(back_populates="roles")
@@ -53,13 +56,14 @@ class RolePermission(BaseModel, table=True):
     """Tabla de relación entre roles y permisos."""
 
     __tablename__ = "role_permissions"
+    __table_args__ = {"schema": "auth"}
 
-    role_id: int = Field(foreign_key="roles.id")
-    permission_id: int = Field(foreign_key="permissions.id")
+    role_id: int = Field(foreign_key="auth.roles.id")
+    permission_id: int = Field(foreign_key="auth.permissions.id")
 
     # Relationships
     role: Role = Relationship(back_populates="permissions")
-    permission: Permission = Relationship(back_populates="role")
+    permission: Permission = Relationship(back_populates="roles")
 
 
 # Esquemas Pydantic para API

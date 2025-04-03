@@ -27,6 +27,8 @@ class ClienteBase(SQLModel):
 
 class Cliente(ClienteBase, BaseModel, table=True):
     __tablename__ = "clientes"
+    __table_args__ = {"schema": "cliente"}
+
     fecha_registro: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Relationships

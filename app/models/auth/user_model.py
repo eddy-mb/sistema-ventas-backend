@@ -26,6 +26,7 @@ class User(UserBase, BaseModel, table=True):
     """Modelo de usuario para la base de datos."""
 
     __tablename__ = "users"
+    __table_args__ = {"schema": "auth"}
 
     hashed_password: str = Field(max_length=255)
     is_superuser: bool = Field(default=False)

@@ -15,9 +15,11 @@ class ContactoEmergenciaBase(SQLModel):
 
 
 class ContactoEmergencia(ContactoEmergenciaBase, BaseModel, table=True):
-    __tablename__ = "contactos_emergencia"
 
-    cliente_id: int = Field(foreign_key="clientes.id")
+    __tablename__ = "contactos_emergencia"
+    __table_args__ = {"schema": "cliente"}
+
+    cliente_id: int = Field(foreign_key="cliente.clientes.id")
 
     # Relationships
     cliente: "Cliente" = Relationship(back_populates="contactos_emergencia")
