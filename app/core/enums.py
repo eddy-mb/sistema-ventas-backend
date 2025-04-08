@@ -27,3 +27,10 @@ class TokenType(str, Enum):
     REFRESH = "refresh"
     RESET_PASSWORD = "reset_password"
     VERIFY_EMAIL = "verify_email"
+
+
+class Roles(str, Enum):
+    ADMINISTRADOR = "Administrador"
+    GERENTE = "Gerente"
+    COUNTER = "Counter"
+    GESTOR_PAQUETES = "Gestor de paquetes"

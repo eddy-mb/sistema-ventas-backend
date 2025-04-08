@@ -5,6 +5,7 @@ from sqlmodel import Field, Relationship, SQLModel
 if TYPE_CHECKING:
     from app.models.auth.user_model import User
 
+from app.core.enums import Roles
 from app.models.auditoria.base_model import BaseModel
 
 
@@ -14,7 +15,7 @@ class Role(BaseModel, table=True):
     __tablename__ = "roles"
     __table_args__ = {"schema": "auth"}
 
-    name: str = Field(max_length=50, index=True)
+    name: Roles = Field(max_length=50, index=True)
     description: Optional[str] = Field(max_length=255, default=None)
     is_system_role: bool = Field(default=False)
 
@@ -26,7 +27,7 @@ class Role(BaseModel, table=True):
 class Permission(BaseModel, table=True):
     """Modelo para permisos del sistema."""
 
-    __tablename__ = "permissions"
+    __tablename__ = "permisos"
     __table_args__ = {"schema": "auth"}
 
     code: str = Field(max_length=100, index=True)
@@ -41,10 +42,10 @@ class Permission(BaseModel, table=True):
 class UserRole(BaseModel, table=True):
     """Tabla de relación entre usuarios y roles."""
 
-    __tablename__ = "user_roles"
+    __tablename__ = "usuario_roles"
     __table_args__ = {"schema": "auth"}
 
-    user_id: int = Field(foreign_key="auth.users.id")
+    user_id: int = Field(foreign_key="auth.usuarios.id")
     role_id: int = Field(foreign_key="auth.roles.id")
 
     # Relationships
@@ -55,11 +56,11 @@ class UserRole(BaseModel, table=True):
 class RolePermission(BaseModel, table=True):
     """Tabla de relación entre roles y permisos."""
 
-    __tablename__ = "role_permissions"
+    __tablename__ = "rol_permisos"
     __table_args__ = {"schema": "auth"}
 
     role_id: int = Field(foreign_key="auth.roles.id")
-    permission_id: int = Field(foreign_key="auth.permissions.id")
+    permission_id: int = Field(foreign_key="auth.permisos.id")
 
     # Relationships
     role: Role = Relationship(back_populates="permissions")
