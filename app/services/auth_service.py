@@ -490,14 +490,13 @@ class AuthService:
             Lista de códigos de permisos
         """
         query = (
-            select(Permission.code)
+            select(Permission)
             .join(RolePermission, RolePermission.permission_id == Permission.id)
             .join(Role, Role.id == RolePermission.role_id)
             .join(UserRole, UserRole.role_id == Role.id)
             .where(UserRole.user_id == user_id)
             .distinct()
         )
-
         permission_codes = [permission.code for permission in self.db.exec(query).all()]
 
         # Añadir automáticamente el permiso de autenticación para todos los usuarios activos

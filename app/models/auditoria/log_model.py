@@ -12,7 +12,7 @@ class LogAuditoria(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     fecha_hora: datetime = Field()
-    usuario_id: Optional[int] = Field(default=None, index=True, foreign_key="auth.users.id")
+    usuario_id: Optional[int] = Field(default=None, index=True, foreign_key="auth.usuarios.id")
     tipo_accion: str = Field(index=True)
     modulo: str = Field(index=True)
     entidad: str = Field(index=True)

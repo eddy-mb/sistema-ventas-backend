@@ -25,7 +25,7 @@ class UserBase(SQLModel):
 class User(UserBase, BaseModel, table=True):
     """Modelo de usuario para la base de datos."""
 
-    __tablename__ = "users"
+    __tablename__ = "usuarios"
     __table_args__ = {"schema": "auth"}
 
     hashed_password: str = Field(max_length=255)

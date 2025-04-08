@@ -1,13 +1,13 @@
 from typing import Annotated, List, Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
-from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.enums import UserStatus
 from app.dependencies.auth import get_current_active_user, has_permission
 from app.dependencies.db import SessionDep
 from app.models.auth.role_model import RoleRead
 from app.models.auth.user_model import User, UserCreate, UserRead, UserUpdate
+from app.schemas.auth.auth_schema import LoginData
 from app.schemas.common_schema import StandardResponse
 from app.services.auth_service import AuthService
 from app.utils.pagination import PagedResponse, PaginationParams, paginate_results
@@ -22,10 +22,7 @@ class Token(StandardResponse):
 
 
 @router.post("/login", response_model=Token)
-async def login(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: SessionDep,
-):
+async def login(db: SessionDep, login_data: LoginData):
     """
     Obtiene un token de acceso utilizando credenciales de usuario.
 
@@ -37,7 +34,7 @@ async def login(
     """
     auth_service = AuthService(db)
     user, access_token, refresh_token = auth_service.authenticate_user(
-        form_data.username, form_data.password
+        login_data.email, login_data.password
     )
 
     return Token(

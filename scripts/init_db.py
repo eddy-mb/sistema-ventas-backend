@@ -225,7 +225,7 @@ PERMISSIONS = {
 # Definición manual de permisos por rol
 ROLE_PERMISSIONS = {
     "Administrador": None,  # None significa "todos los permisos"
-    "Vendedor": [
+    "Counter": [
         "cliente:create",
         "cliente:read",
         "cliente:update",
@@ -252,7 +252,7 @@ ROLE_PERMISSIONS = {
         "reporte:custom",
         "system:audit",
     ],
-    "Inventario": [
+    "Gestor de paquetes": [
         "producto:create",
         "producto:read",
         "producto:update",
