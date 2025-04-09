@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship
 
 if TYPE_CHECKING:
     from app.models.auth.user_model import User
@@ -16,12 +16,12 @@ class Role(BaseModel, table=True):
     __table_args__ = {"schema": "auth"}
 
     name: Roles = Field(max_length=50, index=True)
-    description: Optional[str] = Field(max_length=255, default=None)
+    description: str | None = Field(max_length=255, default=None)
     is_system_role: bool = Field(default=False)
 
     # Relationships
-    users: List["UserRole"] = Relationship(back_populates="role")
-    permissions: List["RolePermission"] = Relationship(back_populates="role")
+    users: list["UserRole"] = Relationship(back_populates="role")
+    permissions: list["RolePermission"] = Relationship(back_populates="role")
 
 
 class Permission(BaseModel, table=True):
@@ -32,11 +32,11 @@ class Permission(BaseModel, table=True):
 
     code: str = Field(max_length=100, index=True)
     name: str = Field(max_length=100)
-    description: Optional[str] = Field(max_length=255, default=None)
+    description: str | None = Field(max_length=255, default=None)
     module: str = Field(max_length=50)
 
     # Relationships
-    roles: List["RolePermission"] = Relationship(back_populates="permission")
+    roles: list["RolePermission"] = Relationship(back_populates="permission")
 
 
 class UserRole(BaseModel, table=True):
@@ -65,36 +65,3 @@ class RolePermission(BaseModel, table=True):
     # Relationships
     role: Role = Relationship(back_populates="permissions")
     permission: Permission = Relationship(back_populates="roles")
-
-
-# Esquemas Pydantic para API
-class RoleRead(SQLModel):
-    """Esquema para leer roles."""
-
-    id: int
-    name: str
-    description: Optional[str] = None
-
-
-class RoleCreate(SQLModel):
-    """Esquema para crear roles."""
-
-    name: str
-    description: Optional[str] = None
-
-
-class RoleUpdate(SQLModel):
-    """Esquema para actualizar roles."""
-
-    name: Optional[str] = None
-    description: Optional[str] = None
-
-
-class PermissionRead(SQLModel):
-    """Esquema para leer permisos."""
-
-    id: int
-    code: str
-    name: str
-    description: Optional[str] = None
-    module: str
