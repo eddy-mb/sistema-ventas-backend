@@ -1,13 +1,12 @@
-from typing import Annotated, List, Optional
+from typing import Annotated, List, Optional, cast
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 
 from app.core.enums import UserStatus
 from app.dependencies.auth import get_current_active_user, has_permission
 from app.dependencies.db import SessionDep
-from app.models.auth.role_model import RoleRead
 from app.models.auth.user_model import User, UserCreate, UserRead, UserUpdate
-from app.schemas.auth.auth_schema import LoginData
+from app.schemas.auth.auth_schema import LoginData, RoleRead
 from app.schemas.common_schema import StandardResponse
 from app.services.auth_service import AuthService
 from app.utils.pagination import PagedResponse, PaginationParams, paginate_results
@@ -30,12 +29,26 @@ async def login(db: SessionDep, login_data: LoginData):
     - **password**: Contraseña
 
     Returns:
-        Token de acceso y de refresco
+        Token de acceso y de refresco, información del usuario, roles y permisos
     """
     auth_service = AuthService(db)
     user, access_token, refresh_token = auth_service.authenticate_user(
         login_data.email, login_data.password
     )
+
+    # Obtener roles y permisos del usuario
+    roles = auth_service.get_user_roles(cast(int, user.id))
+    permissions = auth_service.get_user_permissions(cast(int, user.id))
+
+    # Convertir roles a formato de respuesta
+    roles_data = [
+        RoleRead(
+            id=role.id,
+            name=role.name,
+            description=role.description,
+        )
+        for role in roles
+    ]
 
     return Token(
         status="success",
@@ -50,8 +63,9 @@ async def login(db: SessionDep, login_data: LoginData):
                 "full_name": user.full_name,
                 "email": user.email,
                 "is_active": user.is_active,
-                "is_superuser": user.is_superuser,
             },
+            "roles": [role.name for role in roles_data],
+            "permissions": permissions,
         },
     )
 

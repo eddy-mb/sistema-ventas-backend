@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
@@ -30,18 +30,18 @@ class User(UserBase, BaseModel, table=True):
 
     hashed_password: str = Field(max_length=255)
     is_superuser: bool = Field(default=False)
-    last_login: Optional[datetime] = Field(default=None)
-    password_change_date: Optional[datetime] = Field(default=None)
+    last_login: datetime | None = Field(default=None)
+    password_change_date: datetime | None = Field(default=None)
 
     # Relationships
-    roles: List["UserRole"] = Relationship(back_populates="user")
+    roles: list["UserRole"] = Relationship(back_populates="user")
 
 
 class UserRead(UserBase):
     """Esquema para leer información de usuario."""
 
     id: int
-    last_login: Optional[datetime] = None
+    last_login: datetime | None = None
 
 
 class UserCreate(UserBase):
@@ -53,8 +53,8 @@ class UserCreate(UserBase):
 class UserUpdate(SQLModel):
     """Esquema para actualizar usuarios."""
 
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
-    full_name: Optional[str] = None
-    is_active: Optional[bool] = None
-    status: Optional[UserStatus] = None
+    username: str | None = None
+    email: EmailStr | None = None
+    full_name: str | None = None
+    is_active: bool | None = None
+    status: UserStatus | None = None

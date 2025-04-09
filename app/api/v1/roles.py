@@ -6,17 +6,14 @@ from sqlmodel import col, select
 
 from app.dependencies.auth import get_current_active_user, has_permission
 from app.dependencies.db import SessionDep
-from app.models.auth.role_model import (
-    Permission,
+from app.models.auth.role_model import Permission, Role, RolePermission, UserRole
+from app.models.auth.user_model import User
+from app.schemas.auth.auth_schema import (
     PermissionRead,
-    Role,
     RoleCreate,
-    RolePermission,
     RoleRead,
     RoleUpdate,
-    UserRole,
 )
-from app.models.auth.user_model import User
 from app.schemas.common_schema import StandardResponse
 from app.services.auditoria_service import AuditoriaService, TipoAccion
 
