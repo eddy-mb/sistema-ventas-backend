@@ -2,7 +2,7 @@ from typing import Annotated, List, Optional, cast
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 
-from app.core.enums import UserStatus
+from app.core.enums import EstadoUsuario
 from app.dependencies.auth import get_current_active_user, has_permission
 from app.dependencies.db import SessionDep
 from app.models.auth.user_model import User, UserCreate, UserRead, UserUpdate
@@ -189,7 +189,7 @@ async def get_users(
     pagination: PaginationParams = Depends(),
     search: Optional[str] = Query(None, description="Término de búsqueda"),
     is_active: Optional[bool] = Query(None, description="Filtrar por estado activo"),
-    status: Optional[UserStatus] = Query(None, description="Filtrar por estado específico"),
+    status: Optional[EstadoUsuario] = Query(None, description="Filtrar por estado específico"),
 ):
     """
     Obtiene una lista paginada de usuarios.

@@ -2,7 +2,7 @@ from typing import Optional, Type
 
 from sqlmodel import col, or_, select
 
-from app.core.enums import UserStatus
+from app.core.enums import EstadoUsuario
 from app.models.auth.user_model import User
 from app.repositories.base_repository import BaseRepository
 
@@ -68,7 +68,7 @@ class UserRepository(BaseRepository[User]):
         query = select(User).where(
             User.id == user_id,
             col(User.is_active).is_(True),
-            User.status == UserStatus.ACTIVE,
+            User.status == EstadoUsuario.ACTIVO,
             col(User.estado_audit).is_(True),
         )
         return self.db.exec(query).first() is not None
@@ -84,7 +84,9 @@ class UserRepository(BaseRepository[User]):
             True si el usuario está bloqueado, False si no
         """
         query = select(User).where(
-            User.id == user_id, User.status == UserStatus.LOCKED, col(User.estado_audit).is_(True)
+            User.id == user_id,
+            User.status == EstadoUsuario.BLOQUEADO,
+            col(User.estado_audit).is_(True),
         )
         return self.db.exec(query).first() is not None
 

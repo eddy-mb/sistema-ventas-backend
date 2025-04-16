@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, Security, status
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 
 from app.core.config import get_settings
-from app.core.enums import UserStatus
+from app.core.enums import EstadoUsuario
 from app.dependencies.db import SessionDep
 from app.models.auth.user_model import User
 from app.repositories.auth.user_repository import UserRepository
@@ -66,7 +66,7 @@ def get_current_user(
         raise credentials_exception
 
     # Verificar que el usuario esté activo
-    if not user.is_active or user.status != UserStatus.ACTIVE:
+    if not user.is_active or user.status != EstadoUsuario.ACTIVO:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Usuario inactivo o bloqueado",

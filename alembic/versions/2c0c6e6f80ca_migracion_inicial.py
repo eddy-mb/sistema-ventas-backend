@@ -1,8 +1,8 @@
-"""migracion inicial modelos
+"""migracion inicial
 
-Revision ID: e0b06999c004
+Revision ID: 2c0c6e6f80ca
 Revises:
-Create Date: 2025-04-08 00:37:17.393044
+Create Date: 2025-04-15 19:56:29.408973
 
 """
 
@@ -14,7 +14,7 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "e0b06999c004"
+revision: str = "2c0c6e6f80ca"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -84,11 +84,11 @@ def upgrade() -> None:
         sa.Column(
             "status",
             sa.Enum(
-                "ACTIVE",
-                "INACTIVE",
-                "LOCKED",
-                "PASSWORD_EXPIRED",
-                "PENDING_ACTIVATION",
+                "ACTIVO",
+                "INACTIVO",
+                "BLOQUEADO",
+                "PASSWORD_Expirado",
+                "ACTIVACION_PEDIENTE",
                 name="userstatus",
             ),
             nullable=False,

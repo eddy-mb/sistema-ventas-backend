@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 from sqlmodel import Session, col, select
 
 from app.core.config import get_settings
-from app.core.enums import UserStatus
+from app.core.enums import EstadoUsuario
 from app.models.auth.role_model import Permission, Role, RolePermission, UserRole
 from app.models.auth.user_model import User, UserCreate, UserUpdate
 from app.repositories.auth.user_repository import UserRepository
@@ -64,7 +64,7 @@ class AuthService:
             )
 
         # Verificar estado del usuario
-        if user.status != UserStatus.ACTIVE:
+        if user.status != EstadoUsuario.ACTIVO:
             # Registrar intento fallido en auditoría
             self.auditoria_service.registrar_accion(
                 usuario_id=user.id,
@@ -93,7 +93,7 @@ class AuthService:
 
             # Bloquear cuenta si se supera el límite de intentos
             if user.failed_login_attempts >= settings.MAX_FAILED_LOGIN_ATTEMPTS:
-                user.status = UserStatus.LOCKED
+                user.status = EstadoUsuario.BLOQUEADO
 
             self.db.add(user)
             self.db.commit()
@@ -110,7 +110,7 @@ class AuthService:
                     "status": "failed",
                     "reason": "invalid_password",
                     "failed_attempts": user.failed_login_attempts,
-                    "user_locked": user.status == UserStatus.LOCKED,
+                    "user_locked": user.status == EstadoUsuario.BLOQUEADO,
                 },
                 descripcion="Intento de inicio de sesión fallido - Contraseña incorrecta",
                 resultado=False,
@@ -314,7 +314,9 @@ class AuthService:
         # Actualizar contraseña
         user.hashed_password = get_password_hash(new_password)
         user.password_change_date = datetime.now(timezone.utc)
-        user.status = UserStatus.ACTIVE  # Desbloquear si estaba bloqueado por contraseña expirada
+        user.status = (
+            EstadoUsuario.ACTIVO
+        )  # Desbloquear si estaba bloqueado por contraseña expirada
 
         self.db.add(user)
         self.db.commit()
@@ -766,7 +768,7 @@ class AuthService:
 
         # Desactivar usuario
         user.is_active = False
-        user.status = UserStatus.INACTIVE
+        user.status = EstadoUsuario.INACTIVO
 
         self.db.add(user)
         self.db.commit()
@@ -809,8 +811,8 @@ class AuthService:
 
         # Activar usuario
         user.is_active = True
-        if user.status == UserStatus.INACTIVE:
-            user.status = UserStatus.ACTIVE
+        if user.status == EstadoUsuario.INACTIVO:
+            user.status = EstadoUsuario.ACTIVO
 
         self.db.add(user)
         self.db.commit()
@@ -852,11 +854,11 @@ class AuthService:
             )
 
         # Verificar que el usuario está bloqueado
-        if user.status != UserStatus.LOCKED:
+        if user.status != EstadoUsuario.BLOQUEADO:
             return True  # No es un error, simplemente no hacemos nada
 
         # Desbloquear usuario
-        user.status = UserStatus.ACTIVE
+        user.status = EstadoUsuario.ACTIVO
         user.failed_login_attempts = 0
 
         self.db.add(user)

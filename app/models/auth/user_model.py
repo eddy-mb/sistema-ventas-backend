@@ -7,7 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 if TYPE_CHECKING:
     from app.models.auth.role_model import UserRole
 
-from app.core.enums import UserStatus
+from app.core.enums import EstadoUsuario
 from app.models.auditoria.base_model import BaseModel
 
 
@@ -18,7 +18,7 @@ class UserBase(SQLModel):
     email: EmailStr = Field(max_length=100, index=True)
     full_name: str = Field(max_length=100)
     is_active: bool = Field(default=True)
-    status: UserStatus = Field(default=UserStatus.ACTIVE)
+    status: EstadoUsuario = Field(default=EstadoUsuario.ACTIVO)
     failed_login_attempts: int = Field(default=0)
 
 
@@ -57,4 +57,4 @@ class UserUpdate(SQLModel):
     email: EmailStr | None = None
     full_name: str | None = None
     is_active: bool | None = None
-    status: UserStatus | None = None
+    status: EstadoUsuario | None = None
