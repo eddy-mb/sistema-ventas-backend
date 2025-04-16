@@ -22,7 +22,7 @@ from typing import TypedDict  # noqa
 from sqlmodel import Session, select  # noqa
 
 from app.core.config import get_settings  # noqa
-from app.core.enums import UserStatus  # noqa
+from app.core.enums import EstadoUsuario  # noqa
 from app.database.session import engine  # noqa
 from app.models.auth.role_model import (  # noqa
     Permission,
@@ -272,7 +272,7 @@ class AdminUserDict(TypedDict):
     password: str
     is_active: bool
     is_superuser: bool
-    status: UserStatus
+    status: EstadoUsuario
 
 
 # Usuario administrador inicial
@@ -283,7 +283,7 @@ ADMIN_USER: AdminUserDict = {
     "password": "Admin123!",  # Esto debe cambiarse después de la primera ejecución
     "is_active": True,
     "is_superuser": True,
-    "status": UserStatus.ACTIVE,
+    "status": EstadoUsuario.ACTIVO,
 }
 
 

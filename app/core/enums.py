@@ -14,12 +14,12 @@ class TipoDocumento(str, Enum):
 
 
 # Enums para el módulo de autenticación y seguridad
-class UserStatus(str, Enum):
-    ACTIVE = "Active"
-    INACTIVE = "Inactive"
-    LOCKED = "Locked"
-    PASSWORD_EXPIRED = "PasswordExpired"
-    PENDING_ACTIVATION = "PendingActivation"
+class EstadoUsuario(str, Enum):
+    ACTIVO = "Activo"
+    INACTIVO = "Inactivo"
+    BLOQUEADO = "Bloqueado"
+    PASSWORD_Expirado = "Password_expirado"
+    ACTIVACION_PEDIENTE = "Activación pendiente"
 
 
 class TokenType(str, Enum):
