@@ -1,8 +1,8 @@
-"""migracion inicial
+"""migraciones iniciales
 
-Revision ID: 2c0c6e6f80ca
+Revision ID: 8c829e7faf91
 Revises:
-Create Date: 2025-04-15 19:56:29.408973
+Create Date: 2025-04-17 10:45:49.964796
 
 """
 
@@ -14,7 +14,7 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "2c0c6e6f80ca"
+revision: str = "8c829e7faf91"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -57,7 +57,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column(
             "name",
-            sa.Enum("ADMINISTRADOR", "GERENTE", "COUNTER", "GESTOR_PAQUETES", name="roles"),
+            sa.Enum("GERENTE", "ADMIN", "COUNTER", "GESTOR_DE_PAQUETES", name="roles"),
             nullable=False,
         ),
         sa.Column("description", sqlmodel.sql.sqltypes.AutoString(length=255), nullable=True),
@@ -87,9 +87,9 @@ def upgrade() -> None:
                 "ACTIVO",
                 "INACTIVO",
                 "BLOQUEADO",
-                "PASSWORD_Expirado",
-                "ACTIVACION_PEDIENTE",
-                name="userstatus",
+                "PASSWORD_EXPIRADO",
+                "ACTIVACION_PENDIENTE",
+                name="estadousuario",
             ),
             nullable=False,
         ),

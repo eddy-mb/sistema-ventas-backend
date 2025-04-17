@@ -224,8 +224,8 @@ PERMISSIONS = {
 
 # Definición manual de permisos por rol
 ROLE_PERMISSIONS = {
-    "Administrador": None,  # None significa "todos los permisos"
-    "Counter": [
+    "admin": None,  # None significa "todos los permisos"
+    "counter": [
         "cliente:create",
         "cliente:read",
         "cliente:update",
@@ -237,7 +237,7 @@ ROLE_PERMISSIONS = {
         "reserva:manage",
         "reporte:ventas",
     ],
-    "Gerente": [
+    "gerente": [
         "cliente:read",
         "cliente:update",
         "producto:read",
@@ -252,7 +252,7 @@ ROLE_PERMISSIONS = {
         "reporte:custom",
         "system:audit",
     ],
-    "Gestor de paquetes": [
+    "gestor de paquetes": [
         "producto:create",
         "producto:read",
         "producto:update",
@@ -407,7 +407,7 @@ def create_admin_user(session: Session):
     print(f"Creado usuario administrador: {ADMIN_USER['username']}")
 
     # Asignar rol de administrador
-    admin_role = session.exec(select(Role).where(Role.name == "Administrador")).first()
+    admin_role = session.exec(select(Role).where(Role.name == "admin")).first()
     if admin_role:
         user_role = UserRole(
             user_id=admin.id,
