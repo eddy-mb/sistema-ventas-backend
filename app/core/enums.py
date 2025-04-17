@@ -3,23 +3,23 @@ from enum import Enum
 
 # Enums para el modulo de gestion de clientes
 class EstadoCliente(str, Enum):
-    ACTIVO = "Activo"
-    INACTIVO = "Inactivo"
+    ACTIVO = "activo"
+    INACTIVO = "inactivo"
 
 
 class TipoDocumento(str, Enum):
-    CARNET_IDENTIDAD = "Carnet de Identidad"
-    PASAPORTE = "Pasaporte"
-    OTRO = "Otro"
+    CARNET_IDENTIDAD = "carnet de identidad"
+    PASAPORTE = "pasaporte"
+    OTRO = "otro"
 
 
 # Enums para el módulo de autenticación y seguridad
 class EstadoUsuario(str, Enum):
-    ACTIVO = "Activo"
-    INACTIVO = "Inactivo"
-    BLOQUEADO = "Bloqueado"
-    PASSWORD_Expirado = "Password_expirado"
-    ACTIVACION_PEDIENTE = "Activación pendiente"
+    ACTIVO = "activo"
+    INACTIVO = "inactivo"
+    BLOQUEADO = "bloqueado"
+    PASSWORD_EXPIRADO = "password_expirado"
+    ACTIVACION_PENDIENTE = "activacion_pendiente"
 
 
 class TokenType(str, Enum):
@@ -30,7 +30,7 @@ class TokenType(str, Enum):
 
 
 class Roles(str, Enum):
-    ADMINISTRADOR = "Administrador"
-    GERENTE = "Gerente"
-    COUNTER = "Counter"
-    GESTOR_PAQUETES = "Gestor de paquetes"
+    GERENTE = "gerente"
+    ADMIN = "admin"
+    COUNTER = "counter"
+    GESTOR_DE_PAQUETES = "gestor de paquetes"
